@@ -1,0 +1,29 @@
+rules_version = '2';
+
+// Hot & Appetizing — Storage rules. Product photos under /products/ are
+// publicly readable (menu imagery) and writable ONLY by admin emails from
+// config/admins, with type/size limits enforced here (the client-side
+// checks in api.ts are UX, not the boundary).
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email != null
+        && request.auth.token.email in firestore.get(
+            /databases/(default)/documents/config/admins
+          ).data.emails;
+    }
+
+    match /products/{image} {
+      allow read: if true;
+      allow write: if isAdmin()
+        && request.resource.size < 2 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

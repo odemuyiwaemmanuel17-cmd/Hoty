@@ -1,0 +1,99 @@
+rules_version = '2';
+
+// Hot & Appetizing — Firestore security rules.
+// These are the REAL authorization boundary (the admin UI gate is
+// convenience only). Admin = any signed-in email listed in config/admins,
+// checked server-side on every privileged request. A tampered browser can
+// never forge admin rights or order statuses: in rules-only mode (Spark
+// plan, no Cloud Functions) customers may only append strictly-shaped
+// UNVERIFIED 'pending_confirmation' drafts, status transitions follow the
+// enforced transition table, and order reads stay admin-only. When Cloud
+// Functions (Blaze plan) are deployed they bypass rules and add
+// server-verified pricing on top.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAdmin() {
+      return request.auth != null
+        && request.auth.token.email != null
+        && request.auth.token.email in get(
+            /databases/$(database)/documents/config/admins
+          ).data.emails;
+    }
+
+    // Same transition table as src/core/admin/orderStatus.ts and
+    // functions/index.js — enforced HERE so rules-only mode (no Cloud
+    // Functions on the Spark plan) cannot be bypassed by a tampered client.
+    function allowedTransitions(from) {
+      return from == 'pending_confirmation' ? ['confirmed', 'cancelled']
+        : from == 'confirmed' ? ['preparing', 'cancelled']
+        : from == 'preparing' ? ['ready', 'completed', 'cancelled']
+        : from == 'ready' ? ['completed', 'cancelled']
+        : [];
+    }
+
+    function draftShapeValid(d) {
+      return d.status == 'pending_confirmation'
+        && d.fulfillment in ['pickup', 'delivery']
+        && d.items is list && d.items.size() > 0 && d.items.size() <= 30
+        && d.subtotal_kobo is int && d.subtotal_kobo >= 0 && d.subtotal_kobo <= 100000000000
+        && d.delivery_fee_kobo == null
+        && d.pricing_verified == false
+        && d.idempotency_key is string && d.idempotency_key.size() > 10 && d.idempotency_key.size() <= 200
+        && d.ref is string && d.ref.size() <= 40
+        && (d.customer_name == null || (d.customer_name is string && d.customer_name.size() <= 120))
+        && (d.customer_contact == null || (d.customer_contact is string && d.customer_contact.size() <= 120))
+        && (d.notes == null || (d.notes is string && d.notes.size() <= 600));
+    }
+
+    // Admin allow-list — readable by signed-in staff (UI gate), editable only
+    // from the Firebase console / Admin SDK. Clients can never add themselves.
+    match /config/{doc} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+
+    // Public menu reads.
+    match /categories/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /option_groups/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /product_options/{id} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /products/{id} {
+      // Archived products are invisible to the public, visible to admins.
+      allow read: if isAdmin() || resource.data.archived != true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // Orders.
+    // - Reads: admins only (the dashboard).
+    // - Creates: customers may append an UNVERIFIED 'pending_confirmation'
+    //   draft with a strictly-checked shape (rules-only mode; Cloud
+    //   Functions, when deployed, bypass rules and write verified records).
+    // - Updates: admins only, status must follow the transition table, and
+    //   only status/history/updated_at may change.
+    // - Deletes: nobody.
+    match /orders/{id} {
+      allow read: if isAdmin();
+      allow create: if draftShapeValid(request.resource.data)
+        && id.matches('idem_[0-9a-f]{16}');
+      allow update: if isAdmin()
+        && request.resource.data.status in allowedTransitions(resource.data.status)
+        && request.resource.data.diff(resource.data).affectedKeys()
+             .hasOnly(['status', 'history', 'updated_at']);
+      allow delete: if false;
+    }
+
+    // Everything else is denied.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

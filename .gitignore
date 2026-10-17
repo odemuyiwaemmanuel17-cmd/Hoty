@@ -1,0 +1,17 @@
+node_modules
+dist
+.venv
+*.local
+.env
+.env.*
+!.env.example
+.DS_Store
+
+# local working artifacts (screenshots, video frame scratch, logs, session stores)
+_shots/
+_vidframes/
+_vidframes2/
+_preview.log
+*.tsbuildinfo
+.qoder/
+f795de94-*/

@@ -1,0 +1,3 @@
+# SPA fallback so /admin resolves to the app shell on Netlify-style hosts.
+/admin /index.html 200
+/* /index.html 200

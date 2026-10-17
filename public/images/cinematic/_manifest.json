@@ -1,0 +1,81 @@
+{
+ "hero": {
+  "url": "/images/cinematic/hero.webp",
+  "w": 1565,
+  "h": 892
+ },
+ "grill": {
+  "url": "/images/cinematic/grill-rotisserie.webp",
+  "w": 876,
+  "h": 886
+ },
+ "fireWrap": {
+  "url": "/images/cinematic/fire-wrap.webp",
+  "w": 770,
+  "h": 900
+ },
+ "airburst": {
+  "url": "/images/cinematic/ingredient-airburst.webp",
+  "w": 904,
+  "h": 902
+ },
+ "assembly": {
+  "url": "/images/cinematic/assembly.webp",
+  "w": 956,
+  "h": 818
+ },
+ "dine": {
+  "url": "/images/cinematic/dine-plate.webp",
+  "w": 1280,
+  "h": 854
+ },
+ "layers": {
+  "bread": {
+   "url": "/images/cinematic/ingredient-bread.webp",
+   "w": 457,
+   "h": 180
+  },
+  "meat": {
+   "url": "/images/cinematic/ingredient-meat.webp",
+   "w": 457,
+   "h": 141
+  },
+  "veg": {
+   "url": "/images/cinematic/ingredient-veg.webp",
+   "w": 457,
+   "h": 112
+  },
+  "sauce": {
+   "url": "/images/cinematic/ingredient-sauce.webp",
+   "w": 457,
+   "h": 159
+  }
+ },
+ "products": {
+  "custom": {
+   "url": "/images/cinematic/prod-custom.webp",
+   "w": 656,
+   "h": 892
+  },
+  "chicken": {
+   "url": "/images/cinematic/prod-chicken.webp",
+   "w": 1100,
+   "h": 886
+  },
+  "beef": {
+   "url": "/images/cinematic/prod-beef.webp",
+   "w": 1280,
+   "h": 710
+  },
+  "plate": {
+   "url": "/images/cinematic/prod-plate.webp",
+   "w": 1227,
+   "h": 891
+  },
+  "jumbo": {
+   "url": "/images/cinematic/prod-jumbo.webp",
+   "w": 1280,
+   "h": 859
+  }
+ }
+}

@@ -1,0 +1,83 @@
+@import 'tailwindcss';
+
+@theme {
+  /* ── Design tokens: dark luxury + fire orange ── */
+  --color-obsidian: #0a0a0b;
+  --color-coal: #121214;
+  --color-coal-2: #1a1a1e;
+  --color-ash: #8a8578;
+  --color-smoke: #c9c4b8;
+  --color-cream: #f2ead9;
+  --color-ember: #ff6b18;
+  --color-flame: #ff8a3d;
+  --color-charcoal-line: #26262b;
+  --color-gold: #f5b93e;
+
+  --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  --text-hero: clamp(2.6rem, 9vw, 6.5rem);
+  --text-section: clamp(1.9rem, 5.5vw, 3.4rem);
+  --text-eyebrow: clamp(0.68rem, 1.6vw, 0.8rem);
+
+  --shadow-glow: 0 0 42px -10px rgb(255 107 24 / 0.55);
+
+  --ease-cinematic: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--color-obsidian);
+  color: var(--color-cream);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-ember);
+  color: var(--color-obsidian);
+}
+
+*:focus-visible {
+  outline: 2px solid var(--color-flame);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Fine grain film texture, GPU-cheap (CSS only) */
+.film-grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.05;
+  background-image: radial-gradient(rgb(255 255 255 / 0.9) 0.5px, transparent 0.6px);
+  background-size: 3px 3px;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.25; transform: translateY(0); }
+  50% { opacity: 1; transform: translateY(-3px); }
+}
+
+.loader-dot {
+  animation: pulse-dot 1.1s var(--ease-cinematic) infinite;
+}
+.loader-dot:nth-child(2) { animation-delay: 0.18s; }
+.loader-dot:nth-child(3) { animation-delay: 0.36s; }
