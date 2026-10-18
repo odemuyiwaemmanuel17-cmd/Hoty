@@ -5,6 +5,7 @@ dist
 .env
 .env.*
 !.env.example
+!.env.production
 .DS_Store
 
 # local working artifacts (screenshots, video frame scratch, logs, session stores)
