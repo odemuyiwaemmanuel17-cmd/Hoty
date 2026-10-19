@@ -1,26 +1,32 @@
 /**
  * Hybrid cinematic story — pure scroll→media mapping.
  *
- * The opening is a normal auto-playing MP4 (shawarma commercial). As the
- * visitor scrolls the EXISTING master timeline (#scroll-space, driven by the
- * single useHeroScroll ScrollTrigger), the video crossfades into a canvas that
- * scrubs the SAME footage dissected into 270 sequential JPG frames (forward
- * scroll advances, reverse scroll rewinds), ending on the finished meal as the
- * menu section takes over.
+ * VIDEO ONE (welcome): the original shawarma film plays normally as the
+ * landing hero — muted, inline, autoplay, never scroll-scrubbed.
+ * VIDEO TWO (experience): the newly supplied shawarma film (grill → slicing →
+ * ingredients → rolling → sauce → finished wrap) is dissected into 300
+ * sequential JPG frames (public/frames/shawarma2/). The ONE master scroll
+ * timeline (scrollSignal) crossfades from the welcome video into a canvas
+ * scrubbing those frames: scroll advances, reverse rewinds, and the sequence
+ * HOLDS on the finished meal (frame 240) as the menu takes over. The film's
+ * tail (fries boxes, packaging shots, frames 250-300) is intentionally unused
+ * so the last thing before the menu is an appetizing finished shawarma.
  *
  * Everything here is a pure function of master progress (0..1) so it can be
  * unit-tested and read inside one requestAnimationFrame loop without React
  * state churn.
  */
 
-export const FRAME_COUNT = 270
+export const FRAME_COUNT = 300
 export const VIDEO_URL = '/media/shawarma-intro.mp4'
 export const POSTER_URL = '/media/shawarma-poster.jpg'
+/** Canvas-layer fallback poster — a beat from the SAME film the scrub shows. */
+export const STAGE_POSTER_URL = '/media/shawarma2-meal.jpg'
 
-/** 0-based frame index → zero-padded JPG url (frames are numbered 001..270). */
+/** 0-based frame index → zero-padded JPG url (frames are numbered 001..300). */
 export function frameUrl(index: number): string {
   const i = Math.min(FRAME_COUNT - 1, Math.max(0, Math.round(index)))
-  return `/frames/shawarma/ezgif-frame-${String(i + 1).padStart(3, '0')}.jpg`
+  return `/frames/shawarma2/ezgif-frame-${String(i + 1).padStart(3, '0')}.jpg`
 }
 
 /** Phase boundaries across the master scroll region (normalized 0..1). */
@@ -28,12 +34,12 @@ export const INTRO_END = 0.1 // video plays solo until here
 export const CROSSFADE_END = 0.16 // video → frame-canvas crossfade completes here
 
 /**
- * The scrub stops at the finished plated meal (frame 224, 0-based index 223)
- * and holds it — the film's abstract ingredient-vortex tail (indices 224-269)
- * is intentionally unused so the last thing before the menu is an appetizing
- * finished shawarma, not flying debris.
+ * The scrub stops at the finished plated meal (frame 240, 0-based index 239)
+ * and holds it — the film's tail (fries-box and packaging shots, indices
+ * 240-269+) is intentionally unused so the last thing before the menu is an
+ * appetizing finished shawarma.
  */
-export const SCRUB_LAST_FRAME = 223
+export const SCRUB_LAST_FRAME = 239
 /**
  * Progress at which the finished meal is fully revealed, then held. The menu
  * section begins sliding up over the stage at p = 500/600 ≈ 0.833 (viewport
@@ -68,11 +74,11 @@ export function overlayOpacity(p: number): number {
 }
 
 /**
- * Frame index for the scrub. Stays on frame 0 (rotisserie cone — the same
- * shot the video opens on) through the crossfade, then advances 0..223
- * (cone → ingredients → wrap → assembly → finished plated meal) across the
- * master scroll, reaching the meal at SCRUB_REACH and holding it until the
- * menu slides in. Reversible: lower progress → lower index.
+ * Frame index for the scrub. Stays on frame 0 (the rotisserie grills — the
+ * new film's opening shot) through the crossfade, then advances 0..239
+ * (grill → slicing → ingredients → rolling → sauce → finished wrap) across
+ * the master scroll, reaching the meal at SCRUB_REACH and holding it until
+ * the menu slides in. Reversible: lower progress → lower index.
  */
 export function frameIndexFromProgress(p: number): number {
   const t = ramp(p, CROSSFADE_END, SCRUB_REACH)

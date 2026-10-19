@@ -41,3 +41,17 @@ export function scrollToSection(id: string, reducedMotion: boolean) {
     behavior: reducedMotion ? 'auto' : 'smooth',
   })
 }
+
+/**
+ * From the welcome hero, glide just past the video→frame crossfade so the
+ * visitor lands INSIDE the scroll-controlled film with something to scrub.
+ */
+export function scrollToExperience(reducedMotion: boolean) {
+  const region = document.getElementById('scroll-space')
+  if (!region) {
+    scrollToSection('menu', reducedMotion)
+    return
+  }
+  const top = Math.round(region.offsetHeight * 0.2)
+  window.scrollTo({ top, behavior: reducedMotion ? 'auto' : 'smooth' })
+}

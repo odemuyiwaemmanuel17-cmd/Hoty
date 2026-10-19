@@ -15,22 +15,23 @@ import {
 } from '../src/core/hybrid/hybridStory'
 
 describe('hybrid frame mapping', () => {
-  it('builds zero-padded sequential frame urls (001..270)', () => {
-    expect(frameUrl(0)).toBe('/frames/shawarma/ezgif-frame-001.jpg')
-    expect(frameUrl(9)).toBe('/frames/shawarma/ezgif-frame-010.jpg')
-    expect(frameUrl(FRAME_COUNT - 1)).toBe('/frames/shawarma/ezgif-frame-270.jpg')
+  it('builds zero-padded sequential frame urls for the scrub film (001..300)', () => {
+    expect(frameUrl(0)).toBe('/frames/shawarma2/ezgif-frame-001.jpg')
+    expect(frameUrl(9)).toBe('/frames/shawarma2/ezgif-frame-010.jpg')
+    expect(frameUrl(FRAME_COUNT - 1)).toBe('/frames/shawarma2/ezgif-frame-300.jpg')
   })
 
   it('clamps out-of-range indices', () => {
-    expect(frameUrl(-5)).toBe('/frames/shawarma/ezgif-frame-001.jpg')
-    expect(frameUrl(9999)).toBe('/frames/shawarma/ezgif-frame-270.jpg')
+    expect(frameUrl(-5)).toBe('/frames/shawarma2/ezgif-frame-001.jpg')
+    expect(frameUrl(9999)).toBe('/frames/shawarma2/ezgif-frame-300.jpg')
   })
 
   it('holds frame 0 through the crossfade, then advances to the plated meal and holds', () => {
     expect(frameIndexFromProgress(0)).toBe(0)
     expect(frameIndexFromProgress(INTRO_END)).toBe(0)
     expect(frameIndexFromProgress(CROSSFADE_END)).toBe(0)
-    // ends on the finished plated meal (frame 224), never the vortex tail
+    // ends on the finished wrap (frame 240), never the fries-box tail
+    expect(SCRUB_LAST_FRAME).toBe(239)
     expect(SCRUB_LAST_FRAME).toBeLessThan(FRAME_COUNT - 1)
     expect(frameIndexFromProgress(SCRUB_REACH)).toBe(SCRUB_LAST_FRAME)
     expect(frameIndexFromProgress(1)).toBe(SCRUB_LAST_FRAME)

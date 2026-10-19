@@ -4,6 +4,7 @@ import { useReducedMotion } from '../../core/hooks/useReducedMotion'
 import {
   VIDEO_URL,
   POSTER_URL,
+  STAGE_POSTER_URL,
   frameUrl,
   CROSSFADE_END,
   SCRUB_LAST_FRAME,
@@ -187,9 +188,10 @@ export function FoodScrollStage() {
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 z-[5] overflow-hidden bg-obsidian"
     >
-      {/* Base fallback poster — shows through while frames decode or if media fails */}
+      {/* Base fallback poster — shows through while frames decode or if media fails.
+          Uses a beat from the scrub film itself so the handoff never flashes. */}
       <img
-        src={POSTER_URL}
+        src={STAGE_POSTER_URL}
         alt=""
         className="absolute inset-0 h-full w-full object-cover"
       />

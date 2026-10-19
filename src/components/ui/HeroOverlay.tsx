@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import gsap from 'gsap'
 import { BUSINESS } from '../../core/business'
-import { scrollToSection } from '../../core/hooks/useHeroScroll'
+import { scrollToExperience, scrollToSection } from '../../core/hooks/useHeroScroll'
 import { scrollSignal } from '../../core/stores/useSceneStore'
 import { videoOpacity } from '../../core/hybrid/hybridStory'
 
@@ -77,21 +77,27 @@ export function HeroOverlay({ cinematic }: Props) {
           Hot <span className="text-ember italic">&amp;</span> Appetizing
         </h1>
         <p data-reveal className="mt-4 max-w-xl text-sm leading-relaxed text-smoke sm:text-base">
-          {BUSINESS.tagline} Slow-roasted, carved to order, and wrapped
-          over open fire — scroll to watch it come together.
+          Fresh off the grill. Made to satisfy — scroll to steer the film from
+          fire to finished wrap.
         </p>
         <div data-reveal className="pointer-events-auto mt-8 flex flex-wrap items-center gap-4">
           <button
-            onClick={() => scrollToSection('menu', reduced)}
+            onClick={() => scrollToExperience(reduced)}
             className="rounded-full bg-ember px-7 py-3 text-xs font-semibold tracking-[0.25em] uppercase text-obsidian transition-all hover:bg-flame hover:shadow-glow"
           >
-            Explore Menu
+            Explore the Experience
+          </button>
+          <button
+            onClick={() => scrollToSection('menu', reduced)}
+            className="rounded-full border border-cream/25 px-7 py-3 text-xs font-semibold tracking-[0.25em] uppercase text-cream transition-colors hover:border-ember hover:text-flame"
+          >
+            View Our Menu
           </button>
           <a
             href={`https://wa.me/${BUSINESS.whatsapp}`}
             target="_blank"
             rel="noreferrer"
-            className="rounded-full border border-cream/25 px-7 py-3 text-xs font-semibold tracking-[0.25em] uppercase text-cream transition-colors hover:border-ember hover:text-flame"
+            className="rounded-full px-3 py-3 text-xs font-semibold tracking-[0.25em] uppercase text-ash transition-colors hover:text-flame"
           >
             Order on WhatsApp
           </a>
