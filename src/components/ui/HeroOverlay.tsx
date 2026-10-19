@@ -99,23 +99,24 @@ export function HeroOverlay({ cinematic }: Props) {
       </div>
 
       {/* Reference-short ingredient callouts: labels pinned around the hero subject
-          (root element already carries the scroll fade) */}
+          (root element already carries the scroll fade). Text shadow keeps them
+          legible over bright film beats (e.g. the white-background sauce splash). */}
       {cinematic && (
         <div className="absolute inset-0" aria-hidden="true">
           <div data-reveal className="absolute left-[5%] top-[16%] flex items-center gap-2 sm:left-[10%]">
             <span className="h-1.5 w-1.5 rounded-full bg-ember shadow-glow" />
             <span className="h-px w-8 bg-gradient-to-r from-ember/80 to-transparent sm:w-14" />
-            <span className="text-[9px] uppercase tracking-[0.3em] text-cream/85 sm:text-[10px]">Char-grilled shawarma</span>
+            <span className="text-[9px] uppercase tracking-[0.3em] text-cream/90 [text-shadow:0_1px_10px_rgba(10,8,7,0.95),0_0_2px_rgba(10,8,7,0.8)] sm:text-[10px]">Char-grilled shawarma</span>
           </div>
           <div data-reveal className="absolute right-[5%] top-[30%] flex items-center gap-2 sm:right-[10%] flex-row-reverse">
             <span className="h-1.5 w-1.5 rounded-full bg-gold shadow-glow" />
             <span className="h-px w-8 bg-gradient-to-l from-gold/80 to-transparent sm:w-14" />
-            <span className="text-[9px] uppercase tracking-[0.3em] text-cream/85 sm:text-[10px]">Fresh tomato &amp; lettuce</span>
+            <span className="text-[9px] uppercase tracking-[0.3em] text-cream/90 [text-shadow:0_1px_10px_rgba(10,8,7,0.95),0_0_2px_rgba(10,8,7,0.8)] sm:text-[10px]">Fresh tomato &amp; lettuce</span>
           </div>
           <div data-reveal className="absolute left-[4%] top-[42%] hidden items-center gap-2 sm:flex sm:left-[8%]">
             <span className="h-1.5 w-1.5 rounded-full bg-cream/80" />
             <span className="h-px w-10 bg-gradient-to-r from-cream/50 to-transparent" />
-            <span className="text-[10px] uppercase tracking-[0.3em] text-cream/85">Spiced &amp; carved to order</span>
+            <span className="text-[10px] uppercase tracking-[0.3em] text-cream/90 [text-shadow:0_1px_10px_rgba(10,8,7,0.95),0_0_2px_rgba(10,8,7,0.8)]">Spiced &amp; carved to order</span>
           </div>
         </div>
       )}
