@@ -1,6 +1,7 @@
 import { Navbar } from './components/ui/Navbar'
 import { LoadingScreen } from './components/ui/LoadingScreen'
 import { HeroOverlay } from './components/ui/HeroOverlay'
+import { WelcomeHero } from './components/ui/WelcomeHero'
 import { FoodScrollStage } from './components/ui/FoodScrollStage'
 import { StoryHandoff } from './components/ui/StoryHandoff'
 import { MenuSection } from './components/ui/MenuSection'

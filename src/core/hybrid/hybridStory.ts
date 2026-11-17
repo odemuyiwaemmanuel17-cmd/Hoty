@@ -18,7 +18,8 @@
  */
 
 export const FRAME_COUNT = 300
-export const VIDEO_URL = '/media/shawarma-intro.mp4'
+export const WELCOME_VIDEO_URL = '/media/shawarma-intro.mp4'
+export const VIDEO_URL = '/media/shawarma-intro.mp4' // kept for backward compatibility
 export const POSTER_URL = '/media/shawarma-poster.jpg'
 /** Canvas-layer fallback poster — a beat from the SAME film the scrub shows. */
 export const STAGE_POSTER_URL = '/media/shawarma2-meal.jpg'
