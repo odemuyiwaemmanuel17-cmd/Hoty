@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { scrollToExperience, scrollToSection } from '../../core/hooks/useHeroScroll';
-import { BUSINESS } from '../../core/business';
 import { POSTER_URL, WELCOME_VIDEO_URL } from '../../core/hybrid/hybridStory';
 import { useReducedMotion } from '../../core/hooks/useReducedMotion';
 

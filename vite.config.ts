@@ -4,6 +4,11 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  css: {
+    postcss: {
+      plugins: [],
+    },
+  },
   build: {
     target: 'es2020',
     chunkSizeWarningLimit: 1200,
